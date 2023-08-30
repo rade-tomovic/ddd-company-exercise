@@ -1,6 +1,13 @@
-﻿namespace CompanyManager.Domain.Companies;
+﻿using CompanyManager.Domain.Shared.Core;
 
-public class CompanyAddedEvent
+namespace CompanyManager.Domain.Companies;
+
+public class CompanyAddedEvent : DomainEventBase
 {
-    
+    public CompanyAddedEvent(Company company)
+    {
+        Company = company;
+    }
+
+    public Company Company { get; }
 }

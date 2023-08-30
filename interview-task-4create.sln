@@ -7,13 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompanyManager.Api", "src\C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompanyManager.Domain", "src\CompanyManager.Domain\CompanyManager.Domain.csproj", "{3BEF616C-BAF8-4CD4-B51E-9CA3A8A19D24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompanyManager.Shared", "src\CompanyManager.Shared\CompanyManager.Shared.csproj", "{FE021CE7-2256-428C-8282-D3888999F7F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompanyManager.Shared", "src\CompanyManager.Shared\CompanyManager.Shared.csproj", "{FE021CE7-2256-428C-8282-D3888999F7F5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompanyManager.Persistence", "src\CompanyManager.Persistence\CompanyManager.Persistence.csproj", "{D9B5E470-9169-468C-A5A8-41C093F88F58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompanyManager.Persistence", "src\CompanyManager.Persistence\CompanyManager.Persistence.csproj", "{D9B5E470-9169-468C-A5A8-41C093F88F58}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{EE6D75D8-6276-4C64-9B79-740E22ECFB70}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{EE6D75D8-6276-4C64-9B79-740E22ECFB70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompanyManager.Domain.UnitTests", "test\CompanyManager.Domain.UnitTests\CompanyManager.Domain.UnitTests.csproj", "{488A6DDC-CAD7-4EBB-ABC7-3352B52125A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CompanyManager.Domain.UnitTests", "test\CompanyManager.Domain.UnitTests\CompanyManager.Domain.UnitTests.csproj", "{488A6DDC-CAD7-4EBB-ABC7-3352B52125A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

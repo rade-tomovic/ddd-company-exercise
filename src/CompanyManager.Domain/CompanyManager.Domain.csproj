@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Companies\Rules\" />
     <Folder Include="Shared\Core\" />
+    <Folder Include="Shared\ValueObjects\" />
   </ItemGroup>
 
   <ItemGroup>

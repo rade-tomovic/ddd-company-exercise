@@ -1,4 +1,4 @@
-﻿using CompanyManager.Domain.Shared;
+﻿using CompanyManager.Domain.Shared.Contracts;
 
 namespace CompanyManager.Domain.Companies;
 
