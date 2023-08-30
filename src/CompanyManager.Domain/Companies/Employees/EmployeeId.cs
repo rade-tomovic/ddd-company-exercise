@@ -1,4 +1,4 @@
-﻿using CompanyManager.Domain.Shared;
+﻿using CompanyManager.Domain.Shared.Contracts;
 
 namespace CompanyManager.Domain.Companies.Employees;
 
@@ -11,7 +11,7 @@ public record EmployeeId(Guid Value)
         get => _value;
         init
         {
-            Guard.AgainstEmptyGuid(value, nameof(EmployeeId));
+            Guard.AgainstEmptyGuid(value, nameof(CompanyId));
             _value = value;
         }
     }
