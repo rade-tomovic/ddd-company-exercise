@@ -1,4 +1,4 @@
-﻿namespace CompanyManager.Domain.Shared;
+﻿namespace CompanyManager.Domain.Shared.Contracts;
 
 public static class TimeProvider
 {

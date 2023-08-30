@@ -24,4 +24,10 @@ public class Entity
     {
         if (rule.IsViolated()) throw new BusinessRuleViolationException(rule);
     }
+
+    protected static async Task CheckRuleAsync(IBusinessRuleAsync rule)
+    {
+        if (await rule.IsViolatedAsync())
+            throw new BusinessRuleAsyncViolationException(rule);
+    }
 }

@@ -4,9 +4,9 @@ namespace CompanyManager.Domain.Shared.Core;
 
 public class DomainEventBase : IDomainEvent
 {
-    public DomainEventBase(DateTime occurredOn)
+    protected DomainEventBase()
     {
-        OccurredOn = occurredOn;
+        OccurredOn = TimeProvider.Now;
     }
 
     public DateTime OccurredOn { get; }
