@@ -4,7 +4,7 @@ using CompanyManager.Domain.Companies.Employees;
 using CompanyManager.Domain.Shared.ValueObjects;
 using FluentAssertions;
 
-namespace CompanyManager.Tests;
+namespace CompanyManager.Domain.UnitTests;
 
 [SuppressMessage("ReSharper", "ObjectCreationAsStatement")]
 public class ValueObjectTests
