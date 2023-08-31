@@ -15,5 +15,9 @@ public class CompanyNameMustBeUniqueRule : IBusinessRuleAsync
     }
 
     public string Message => $"Company name must be unique. Company name: {_name}";
-    public async Task<bool> IsViolatedAsync() => await _companyUniquenessChecker.IsUniqueAsync(_name); 
+
+    public async Task<bool> IsViolatedAsync()
+    {
+        return await _companyUniquenessChecker.IsUniqueAsync(_name);
+    }
 }

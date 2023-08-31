@@ -27,7 +27,11 @@ public class Company : Entity, IAuditable
         AddDomainEvent(new CompanyAddedEvent(this));
     }
 
-    public static async Task<Company> CreateNew(string name, List<Employee> employees, ICompanyUniquenessChecker companyUniquenessChecker, IEmployeeEmailUniquenessChecker emailUniquenessChecker, IEmployeeTitleWithinCompanyUniquenessChecker titleWithinCompanyUniquenessChecker)
+    public DateTime CreatedAt { get; }
+
+    public static async Task<Company> CreateNew(string name, List<Employee> employees, ICompanyUniquenessChecker companyUniquenessChecker,
+        IEmployeeEmailUniquenessChecker emailUniquenessChecker,
+        IEmployeeTitleWithinCompanyUniquenessChecker titleWithinCompanyUniquenessChecker)
     {
         await CheckRuleAsync(new CompanyNameMustBeUniqueRule(companyUniquenessChecker, name));
 
@@ -48,6 +52,4 @@ public class Company : Entity, IAuditable
 
         return new EmployeeId(employee.Id);
     }
-
-    public DateTime CreatedAt { get; }
 }

@@ -5,8 +5,8 @@ namespace CompanyManager.Domain.Companies.Rules;
 
 public class EmployeeEmailMustBeUniqueRule : IBusinessRuleAsync
 {
-    private readonly IEmployeeEmailUniquenessChecker _emailUniquenessChecker;
     private readonly string _email;
+    private readonly IEmployeeEmailUniquenessChecker _emailUniquenessChecker;
 
     public EmployeeEmailMustBeUniqueRule(IEmployeeEmailUniquenessChecker emailUniquenessChecker, string email)
     {
@@ -15,5 +15,9 @@ public class EmployeeEmailMustBeUniqueRule : IBusinessRuleAsync
     }
 
     public string Message => $"Employee email must be unique. Email: {_email}";
-    public async Task<bool> IsViolatedAsync() => await _emailUniquenessChecker.IsUniqueAsync(_email);
+
+    public async Task<bool> IsViolatedAsync()
+    {
+        return await _emailUniquenessChecker.IsUniqueAsync(_email);
+    }
 }

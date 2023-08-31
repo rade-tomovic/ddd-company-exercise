@@ -22,6 +22,7 @@ public class Employee : Entity, IAuditable
     public Guid Id => _id.Value;
     public DateTime CreatedAt { get; }
 
+
     internal static Employee CreateNew(string email, EmployeeTitle title)
     {
         return new Employee(email, title);

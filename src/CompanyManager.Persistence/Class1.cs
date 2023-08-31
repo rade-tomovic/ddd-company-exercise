@@ -1,7 +1,5 @@
-﻿namespace CompanyManager.Persistence
-{
-    public class Class1
-    {
+﻿namespace CompanyManager.Persistence;
 
-    }
+public class Class1
+{
 }

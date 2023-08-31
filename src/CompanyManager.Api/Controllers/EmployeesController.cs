@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace interview_task_4create.Controllers
+namespace interview_task_4create.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class EmployeesController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class EmployeesController : ControllerBase
-    {
-    }
 }
