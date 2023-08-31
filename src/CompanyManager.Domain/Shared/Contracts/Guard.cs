@@ -9,14 +9,14 @@ public static class Guard
         if (value == Guid.Empty) throw new ArgumentException($"{name} cannot be an empty GUID.");
     }
 
-    public static void AgainstNullOrEmpty(string value, string name)
+    public static void AgainstNullOrWhiteSpace(string value, string name)
     {
-        if (string.IsNullOrEmpty(value)) throw new ArgumentException($"{name} cannot be null or empty.");
+        if (string.IsNullOrWhiteSpace(value)) throw new ArgumentException($"{name} cannot be null or empty.");
     }
 
     public static void AgainstInvalidEmail(string value, string name)
     {
-        if (!Regex.IsMatch(value, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$"))
+        if (!Regex.IsMatch(value, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"))
             throw new ArgumentException($"{name} is not a valid email address.");
     }
 }

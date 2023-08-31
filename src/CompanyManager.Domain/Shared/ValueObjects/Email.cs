@@ -2,18 +2,14 @@
 
 namespace CompanyManager.Domain.Shared.ValueObjects;
 
-public record Email(string Value)
+public record Email
 {
-    private readonly string _value = string.Empty;
-
-    public string Value
+    public Email(string value)
     {
-        get => _value;
-        init
-        {
-            Guard.AgainstNullOrEmpty(value, nameof(Email));
-            Guard.AgainstInvalidEmail(value, nameof(Email));
-            _value = value;
-        }
+        Guard.AgainstNullOrWhiteSpace(value, nameof(Email));
+        Guard.AgainstInvalidEmail(value, nameof(Email));
+        Value = value;
     }
+
+    public string Value { get; }
 }

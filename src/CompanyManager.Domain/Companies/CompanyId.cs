@@ -2,17 +2,13 @@
 
 namespace CompanyManager.Domain.Companies;
 
-public record CompanyId(Guid Value)
+public record CompanyId
 {
-    private readonly Guid _value;
-
-    public Guid Value
+    public CompanyId(Guid value)
     {
-        get => _value;
-        init
-        {
-            Guard.AgainstEmptyGuid(value, nameof(CompanyId));
-            _value = value;
-        }
+        Guard.AgainstEmptyGuid(value, nameof(CompanyId));
+        Value = value;
     }
+
+    public Guid Value { get; }
 }

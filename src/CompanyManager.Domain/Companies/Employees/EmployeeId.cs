@@ -2,17 +2,13 @@
 
 namespace CompanyManager.Domain.Companies.Employees;
 
-public record EmployeeId(Guid Value)
+public record EmployeeId
 {
-    private readonly Guid _value;
-
-    public Guid Value
+    public EmployeeId(Guid value)
     {
-        get => _value;
-        init
-        {
-            Guard.AgainstEmptyGuid(value, nameof(CompanyId));
-            _value = value;
-        }
+        Guard.AgainstEmptyGuid(value, nameof(EmployeeId));
+        Value = value;
     }
+
+    public Guid Value { get; }
 }
