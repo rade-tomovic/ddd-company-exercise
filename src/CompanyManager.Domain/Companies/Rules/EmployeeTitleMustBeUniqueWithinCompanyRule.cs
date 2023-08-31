@@ -20,6 +20,6 @@ public class EmployeeTitleMustBeUniqueWithinCompanyRule : IBusinessRuleAsync
 
     public async Task<bool> IsViolatedAsync()
     {
-        return await _employeeTitleWithinCompanyUniquenessChecker.IsUniqueAsync(_employeeTitle);
+        return !await _employeeTitleWithinCompanyUniquenessChecker.IsUniqueAsync(_employeeTitle);
     }
 }

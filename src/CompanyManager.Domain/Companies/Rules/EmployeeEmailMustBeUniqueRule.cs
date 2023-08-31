@@ -18,6 +18,6 @@ public class EmployeeEmailMustBeUniqueRule : IBusinessRuleAsync
 
     public async Task<bool> IsViolatedAsync()
     {
-        return await _emailUniquenessChecker.IsUniqueAsync(_email);
+        return !await _emailUniquenessChecker.IsUniqueAsync(_email);
     }
 }

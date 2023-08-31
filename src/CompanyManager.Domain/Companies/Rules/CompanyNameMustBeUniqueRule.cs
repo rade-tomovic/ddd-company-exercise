@@ -18,6 +18,6 @@ public class CompanyNameMustBeUniqueRule : IBusinessRuleAsync
 
     public async Task<bool> IsViolatedAsync()
     {
-        return await _companyUniquenessChecker.IsUniqueAsync(_name);
+        return !await _companyUniquenessChecker.IsUniqueAsync(_name);
     }
 }
