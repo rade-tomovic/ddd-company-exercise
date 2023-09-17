@@ -10,32 +10,29 @@ public class Company : Entity, IAuditable
 {
     private readonly List<Employee> _employees;
     private readonly CompanyId _id;
-    private readonly string _name;
 
-    private Company()
+    private Company(string name)
     {
+        Name = name;
         _employees = new List<Employee>();
-    }
-
-    private Company(string name, List<Employee> employees)
-    {
-        _name = name;
-        _employees = employees;
         _id = new CompanyId(Guid.NewGuid());
         CreatedAt = TimeProvider.Now;
 
         AddDomainEvent(new CompanyAddedEvent(this));
     }
 
+    public Guid Id => _id.Value;
+    public string Name { get; }
+
+    public IReadOnlyCollection<Employee> Employees => _employees.AsReadOnly();
+
     public DateTime CreatedAt { get; }
 
-    public static async Task<Company> CreateNew(string name, List<Employee> employees, ICompanyUniquenessChecker companyUniquenessChecker,
-        IEmployeeEmailUniquenessChecker emailUniquenessChecker,
-        IEmployeeTitleWithinCompanyUniquenessChecker titleWithinCompanyUniquenessChecker)
+    public static async Task<Company> CreateNew(string name, ICompanyUniquenessChecker companyUniquenessChecker)
     {
         await CheckRuleAsync(new CompanyNameMustBeUniqueRule(companyUniquenessChecker, name));
 
-        return new Company(name, employees);
+        return new Company(name);
     }
 
     public async Task<EmployeeId> AddEmployee(string email, EmployeeTitle title, IEmployeeEmailUniquenessChecker emailUniquenessChecker,

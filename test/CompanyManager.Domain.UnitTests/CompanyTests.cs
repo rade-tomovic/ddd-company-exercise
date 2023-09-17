@@ -15,8 +15,7 @@ public class CompanyTests
         Mock<ICompanyUniquenessChecker> mockUniquenessChecker = new();
         mockUniquenessChecker.Setup(x => x.IsUniqueAsync(It.IsAny<string>())).Returns(Task.FromResult(true));
 
-        var company = await Company.CreateNew("UniqueName", new List<Employee>(), mockUniquenessChecker.Object,
-            new Mock<IEmployeeEmailUniquenessChecker>().Object, new Mock<IEmployeeTitleWithinCompanyUniquenessChecker>().Object);
+        var company = await Company.CreateNew("UniqueName", mockUniquenessChecker.Object);
 
         company.Should().NotBeNull();
     }
@@ -27,8 +26,7 @@ public class CompanyTests
         Mock<ICompanyUniquenessChecker> mockUniquenessChecker = new();
         mockUniquenessChecker.Setup(x => x.IsUniqueAsync(It.IsAny<string>())).Returns(Task.FromResult(false));
 
-        Func<Task> act = async () => await Company.CreateNew("DuplicateName", new List<Employee>(), mockUniquenessChecker.Object,
-            new Mock<IEmployeeEmailUniquenessChecker>().Object, new Mock<IEmployeeTitleWithinCompanyUniquenessChecker>().Object);
+        Func<Task> act = async () => await Company.CreateNew("DuplicateName", mockUniquenessChecker.Object);
 
         await act.Should().ThrowAsync<BusinessRuleAsyncViolationException>()
             .WithMessage("Company name must be unique. Company name: DuplicateName");
@@ -48,8 +46,7 @@ public class CompanyTests
         Mock<IEmployeeTitleWithinCompanyUniquenessChecker> mockTitleChecker = new();
         mockTitleChecker.Setup(x => x.IsUniqueAsync(It.IsAny<EmployeeTitle>())).Returns(Task.FromResult(true));
 
-        var company = await Company.CreateNew("CompanyName", new List<Employee>(), mockCompanyUniquenessChecker.Object,
-            mockEmailChecker.Object, mockTitleChecker.Object);
+        var company = await Company.CreateNew("CompanyName", mockCompanyUniquenessChecker.Object);
 
         EmployeeId employeeId = await company.AddEmployee(email, title, mockEmailChecker.Object, mockTitleChecker.Object);
 
@@ -68,8 +65,7 @@ public class CompanyTests
         Mock<IEmployeeTitleWithinCompanyUniquenessChecker> mockTitleChecker = new();
         mockTitleChecker.Setup(x => x.IsUniqueAsync(It.IsAny<EmployeeTitle>())).Returns(Task.FromResult(true));
 
-        var company = await Company.CreateNew("CompanyName", new List<Employee>(), mockCompanyUniquenessChecker.Object,
-            mockEmailChecker.Object, mockTitleChecker.Object);
+        var company = await Company.CreateNew("CompanyName", mockCompanyUniquenessChecker.Object);
 
         Func<Task> act = async () =>
             await company.AddEmployee("duplicate@example.com", EmployeeTitle.Developer, mockEmailChecker.Object, mockTitleChecker.Object);
@@ -90,8 +86,7 @@ public class CompanyTests
         Mock<IEmployeeTitleWithinCompanyUniquenessChecker> mockTitleChecker = new();
         mockTitleChecker.Setup(x => x.IsUniqueAsync(It.IsAny<EmployeeTitle>())).Returns(Task.FromResult(false));
 
-        var company = await Company.CreateNew("CompanyName", new List<Employee>(), mockCompanyUniquenessChecker.Object,
-            mockEmailChecker.Object, mockTitleChecker.Object);
+        var company = await Company.CreateNew("CompanyName", mockCompanyUniquenessChecker.Object);
 
         Func<Task> act = async () =>
             await company.AddEmployee("dev@example.com", EmployeeTitle.Developer, mockEmailChecker.Object, mockTitleChecker.Object);
@@ -111,8 +106,7 @@ public class CompanyTests
         Mock<IEmployeeTitleWithinCompanyUniquenessChecker> mockTitleChecker = new();
         mockTitleChecker.Setup(x => x.IsUniqueAsync(It.IsAny<EmployeeTitle>())).Returns(Task.FromResult(true));
 
-        var company = await Company.CreateNew("CompanyName", new List<Employee>(), mockCompanyUniquenessChecker.Object,
-            mockEmailChecker.Object, mockTitleChecker.Object);
+        var company = await Company.CreateNew("CompanyName", mockCompanyUniquenessChecker.Object);
 
         EmployeeId employeeId = await company.AddEmployee("dev@example.com", EmployeeTitle.Developer, mockEmailChecker.Object,
             mockTitleChecker.Object);
@@ -126,8 +120,7 @@ public class CompanyTests
         Mock<ICompanyUniquenessChecker> mockCompanyUniquenessChecker = new();
         mockCompanyUniquenessChecker.Setup(x => x.IsUniqueAsync(It.IsAny<string>())).Returns(Task.FromResult(true));
 
-        var company = await Company.CreateNew("CompanyName", new List<Employee>(), mockCompanyUniquenessChecker.Object,
-            new Mock<IEmployeeEmailUniquenessChecker>().Object, new Mock<IEmployeeTitleWithinCompanyUniquenessChecker>().Object);
+        var company = await Company.CreateNew("CompanyName", mockCompanyUniquenessChecker.Object);
 
         company.DomainEvents.Should().ContainSingle(e => e is CompanyAddedEvent);
     }
@@ -144,8 +137,7 @@ public class CompanyTests
         Mock<IEmployeeTitleWithinCompanyUniquenessChecker> mockTitleChecker = new();
         mockTitleChecker.Setup(x => x.IsUniqueAsync(It.IsAny<EmployeeTitle>())).Returns(Task.FromResult(true));
 
-        var company = await Company.CreateNew("CompanyName", new List<Employee>(), mockCompanyUniquenessChecker.Object,
-            mockEmailChecker.Object, mockTitleChecker.Object);
+        var company = await Company.CreateNew("CompanyName", mockCompanyUniquenessChecker.Object);
 
         await company.AddEmployee("dev@example.com", EmployeeTitle.Developer, mockEmailChecker.Object, mockTitleChecker.Object);
 
