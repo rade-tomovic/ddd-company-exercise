@@ -47,7 +47,7 @@ public class AddCompanyCommandHandler : ICommandHandler<AddCompanyCommand, Guid>
         List<Domain.Companies.Employees.Employee> existingEmployeeEntities =
             _employeeRepository.GetByIdsAsync(existingEmployees.Select(e => e.Id!.Value).ToArray()).Result;
         List<Domain.Companies.Employees.Employee> newEmployeeEntities = newEmployees
-            .Select(x => Domain.Companies.Employees.Employee.CreateNew(x.Email!, Enum.Parse<EmployeeTitle>(x.Title!))).ToList();
+            .Select(x => Domain.Companies.Employees.Employee.CreateNew(x.Email!, x.Title!.Value)).ToList();
 
         List<Domain.Companies.Employees.Employee> allEmployees = new();
         allEmployees.AddRange(existingEmployeeEntities);
