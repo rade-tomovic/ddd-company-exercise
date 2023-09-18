@@ -2,5 +2,5 @@
 
 public interface IEmployeeEmailUniquenessChecker
 {
-    Task<bool> IsUniqueAsync(string email);
+    Task<bool> IsUniqueAsync(string email, Guid companyId);
 }

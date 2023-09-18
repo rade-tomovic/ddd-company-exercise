@@ -4,5 +4,5 @@ namespace CompanyManager.Domain.Companies.Contracts;
 
 public interface IEmployeeTitleWithinCompanyUniquenessChecker
 {
-    Task<bool> IsUniqueAsync(EmployeeTitle title);
+    Task<bool> IsUniqueAsync(EmployeeTitle title, Guid companyId);
 }

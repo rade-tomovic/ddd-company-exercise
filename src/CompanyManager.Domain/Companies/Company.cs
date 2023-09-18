@@ -38,8 +38,8 @@ public class Company : Entity, IAuditable
     public async Task<EmployeeId> AddEmployee(string email, EmployeeTitle title, IEmployeeEmailUniquenessChecker emailUniquenessChecker,
         IEmployeeTitleWithinCompanyUniquenessChecker titleWithinCompanyUniquenessChecker)
     {
-        await CheckRuleAsync(new EmployeeEmailMustBeUniqueRule(emailUniquenessChecker, email));
-        await CheckRuleAsync(new EmployeeTitleMustBeUniqueWithinCompanyRule(titleWithinCompanyUniquenessChecker, title));
+        await CheckRuleAsync(new EmployeeEmailMustBeUniqueRule(emailUniquenessChecker, email, _id));
+        await CheckRuleAsync(new EmployeeTitleMustBeUniqueWithinCompanyRule(titleWithinCompanyUniquenessChecker, title, _id));
 
         var employee = Employee.CreateNew(email, title);
 
