@@ -1,5 +1,4 @@
-﻿using CompanyManager.Application.Company.AddCompany;
-using CompanyManager.Application.Core.Commands;
+﻿using CompanyManager.Application.Core.Commands;
 using CompanyManager.Domain.Companies;
 using CompanyManager.Domain.Companies.Contracts;
 using CompanyManager.Domain.Companies.Employees;
@@ -27,10 +26,10 @@ public class AddCompanyCommandHandler : ICommandHandler<AddCompanyCommand, Guid>
 
     public async Task<Guid> Handle(AddCompanyCommand request, CancellationToken cancellationToken)
     {
-        var company = await Domain.Companies.Company.CreateNew(request.CompanyName, _companyUniquenssChecker);
-        List<Domain.Companies.Employees.Employee> allEmployees = PrepareEmployeeEntities(request);
+        var company = await Company.CreateNew(request.CompanyName, _companyUniquenssChecker);
+        List<Employee> allEmployees = PrepareEmployeeEntities(request);
 
-        foreach (Domain.Companies.Employees.Employee employee in allEmployees)
+        foreach (Employee employee in allEmployees)
             await company.AddEmployee(employee.Email, employee.Title, _employeeEmailUniquenessChecker,
                 _employeeTitleWithinCompanyUniquenessChecker);
 
@@ -39,17 +38,17 @@ public class AddCompanyCommandHandler : ICommandHandler<AddCompanyCommand, Guid>
         return result.Value;
     }
 
-    private List<Domain.Companies.Employees.Employee> PrepareEmployeeEntities(AddCompanyCommand request)
+    private List<Employee> PrepareEmployeeEntities(AddCompanyCommand request)
     {
         List<EmployeeToAdd> newEmployees = request.Employees.Where(e => e.Id == null).ToList();
         List<EmployeeToAdd> existingEmployees = request.Employees.Where(e => e.Id != null).ToList();
 
-        List<Domain.Companies.Employees.Employee> existingEmployeeEntities =
+        List<Employee> existingEmployeeEntities =
             _employeeRepository.GetByIdsAsync(existingEmployees.Select(e => e.Id!.Value).ToArray()).Result;
-        List<Domain.Companies.Employees.Employee> newEmployeeEntities = newEmployees
-            .Select(x => Domain.Companies.Employees.Employee.CreateNew(x.Email!, x.Title!.Value)).ToList();
+        List<Employee> newEmployeeEntities = newEmployees
+            .Select(x => Employee.CreateNew(x.Email!, x.Title!.Value)).ToList();
 
-        List<Domain.Companies.Employees.Employee> allEmployees = new();
+        List<Employee> allEmployees = new();
         allEmployees.AddRange(existingEmployeeEntities);
         allEmployees.AddRange(newEmployeeEntities);
 

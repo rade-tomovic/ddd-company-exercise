@@ -1,4 +1,4 @@
-﻿namespace CompanyManager.Application.Company.DomainServices;
+﻿namespace CompanyManager.Application.Companies.DomainServices;
 
 public class CompanyUniquenessChecker
 {

@@ -1,6 +1,6 @@
 ﻿namespace CompanyManager.Application.Companies.DomainServices;
 
-public class EmployeeTitleWithinCompanyUniquenessChecker
+public class EmployeeEmailUniquenessChecker
 {
-    
+
 }

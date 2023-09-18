@@ -1,6 +1,6 @@
 ﻿using CompanyManager.Domain.Companies.Employees;
 
-namespace CompanyManager.Application.Company.AddCompany;
+namespace CompanyManager.Application.Companies.AddCompany;
 
 public class EmployeeToAdd
 {

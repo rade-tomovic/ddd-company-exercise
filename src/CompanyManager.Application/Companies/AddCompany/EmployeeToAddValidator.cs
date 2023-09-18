@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace CompanyManager.Application.Company.AddCompany;
+namespace CompanyManager.Application.Companies.AddCompany;
 
 public class EmployeeToAddValidator : AbstractValidator<EmployeeToAdd>
 {

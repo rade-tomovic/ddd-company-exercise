@@ -1,8 +1,9 @@
-﻿using CompanyManager.Domain.Companies.Employees;
+﻿using CompanyManager.Application.Core.Commands;
+using CompanyManager.Domain.Companies.Employees;
 
-namespace CompanyManager.Application.Employee.AddEmployee;
+namespace CompanyManager.Application.Employees.AddEmployee;
 
-public class AddEmployeeCommand
+public class AddEmployeeCommand : ICommand<Guid>
 {
     public AddEmployeeCommand(List<Guid> companyIds, EmployeeTitle title, string email)
     {
@@ -14,4 +15,5 @@ public class AddEmployeeCommand
     public string Email { get; set; }
     public EmployeeTitle Title { get; set; }
     public List<Guid> CompanyIds { get; set; }
+    public Guid Id { get; }
 }

@@ -1,5 +1,4 @@
-﻿using CompanyManager.Application.Company.AddCompany;
-using CompanyManager.Application.Core.Commands;
+﻿using CompanyManager.Application.Core.Commands;
 
 namespace CompanyManager.Application.Companies.AddCompany;
 

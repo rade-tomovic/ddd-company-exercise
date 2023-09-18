@@ -1,5 +1,4 @@
-﻿using CompanyManager.Application.Company.AddCompany;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace CompanyManager.Application.Companies.AddCompany;
 
