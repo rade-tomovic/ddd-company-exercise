@@ -23,7 +23,7 @@ public class Employee : Entity, IAuditable
     public DateTime CreatedAt { get; }
 
 
-    internal static Employee CreateNew(string email, EmployeeTitle title)
+    public static Employee CreateNew(string email, EmployeeTitle title)
     {
         return new Employee(email, title);
     }

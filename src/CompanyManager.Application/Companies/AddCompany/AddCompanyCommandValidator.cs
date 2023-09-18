@@ -1,6 +1,7 @@
-﻿using FluentValidation;
+﻿using CompanyManager.Application.Company.AddCompany;
+using FluentValidation;
 
-namespace CompanyManager.Application.Company.AddCompany;
+namespace CompanyManager.Application.Companies.AddCompany;
 
 public class AddCompanyCommandValidator : AbstractValidator<AddCompanyCommand>
 {

@@ -1,6 +1,7 @@
-﻿using CompanyManager.Application.Core.Commands;
+﻿using CompanyManager.Application.Company.AddCompany;
+using CompanyManager.Application.Core.Commands;
 
-namespace CompanyManager.Application.Company.AddCompany;
+namespace CompanyManager.Application.Companies.AddCompany;
 
 public class AddCompanyCommand : CommandBase<Guid>
 {
