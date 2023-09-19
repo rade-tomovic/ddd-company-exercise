@@ -2,6 +2,7 @@
 using CompanyManager.Domain.Companies;
 using CompanyManager.Domain.Companies.Contracts;
 using CompanyManager.Domain.Companies.Employees;
+using Microsoft.Extensions.Logging;
 
 namespace CompanyManager.Application.Companies.AddCompany;
 
@@ -12,16 +13,18 @@ public class AddCompanyCommandHandler : ICommandHandler<AddCompanyCommand, Guid>
     private readonly IEmployeeEmailUniquenessChecker _employeeEmailUniquenessChecker;
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IEmployeeTitleWithinCompanyUniquenessChecker _employeeTitleWithinCompanyUniquenessChecker;
+    private readonly ILogger<AddCompanyCommandHandler> _logger;
 
     public AddCompanyCommandHandler(ICompanyRepository companyRepository, ICompanyUniquenessChecker companyUniquenssChecker,
         IEmployeeEmailUniquenessChecker employeeEmailUniquenessChecker,
-        IEmployeeTitleWithinCompanyUniquenessChecker employeeTitleWithinCompanyUniquenessChecker, IEmployeeRepository employeeRepository)
+        IEmployeeTitleWithinCompanyUniquenessChecker employeeTitleWithinCompanyUniquenessChecker, IEmployeeRepository employeeRepository, ILogger<AddCompanyCommandHandler> logger)
     {
         _companyRepository = companyRepository;
         _companyUniquenssChecker = companyUniquenssChecker;
         _employeeEmailUniquenessChecker = employeeEmailUniquenessChecker;
         _employeeTitleWithinCompanyUniquenessChecker = employeeTitleWithinCompanyUniquenessChecker;
         _employeeRepository = employeeRepository;
+        _logger = logger;
     }
 
     public async Task<Guid> Handle(AddCompanyCommand request, CancellationToken cancellationToken)

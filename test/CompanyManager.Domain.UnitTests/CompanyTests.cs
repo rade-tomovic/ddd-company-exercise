@@ -41,10 +41,10 @@ public class CompanyTests
         mockCompanyUniquenessChecker.Setup(x => x.IsUniqueAsync(It.IsAny<string>())).Returns(Task.FromResult(true));
 
         Mock<IEmployeeEmailUniquenessChecker> mockEmailChecker = new();
-        mockEmailChecker.Setup(x => x.IsUniqueAsync(It.IsAny<string>())).Returns(Task.FromResult(true));
+        mockEmailChecker.Setup(x => x.IsUniqueAsync(It.IsAny<string>(), It.IsAny<Guid>())).Returns(Task.FromResult(true));
 
         Mock<IEmployeeTitleWithinCompanyUniquenessChecker> mockTitleChecker = new();
-        mockTitleChecker.Setup(x => x.IsUniqueAsync(It.IsAny<EmployeeTitle>())).Returns(Task.FromResult(true));
+        mockTitleChecker.Setup(x => x.IsUniqueAsync(It.IsAny<EmployeeTitle>(), It.IsAny<Guid>())).Returns(Task.FromResult(true));
 
         var company = await Company.CreateNew("CompanyName", mockCompanyUniquenessChecker.Object);
 
@@ -60,10 +60,10 @@ public class CompanyTests
         mockCompanyUniquenessChecker.Setup(x => x.IsUniqueAsync(It.IsAny<string>())).Returns(Task.FromResult(true));
 
         Mock<IEmployeeEmailUniquenessChecker> mockEmailChecker = new();
-        mockEmailChecker.Setup(x => x.IsUniqueAsync(It.IsAny<string>())).Returns(Task.FromResult(false));
+        mockEmailChecker.Setup(x => x.IsUniqueAsync(It.IsAny<string>(), It.IsAny<Guid>())).Returns(Task.FromResult(false));
 
         Mock<IEmployeeTitleWithinCompanyUniquenessChecker> mockTitleChecker = new();
-        mockTitleChecker.Setup(x => x.IsUniqueAsync(It.IsAny<EmployeeTitle>())).Returns(Task.FromResult(true));
+        mockTitleChecker.Setup(x => x.IsUniqueAsync(It.IsAny<EmployeeTitle>(), It.IsAny<Guid>())).Returns(Task.FromResult(true));
 
         var company = await Company.CreateNew("CompanyName", mockCompanyUniquenessChecker.Object);
 
@@ -81,10 +81,10 @@ public class CompanyTests
         mockCompanyUniquenessChecker.Setup(x => x.IsUniqueAsync(It.IsAny<string>())).Returns(Task.FromResult(true));
 
         Mock<IEmployeeEmailUniquenessChecker> mockEmailChecker = new();
-        mockEmailChecker.Setup(x => x.IsUniqueAsync(It.IsAny<string>())).Returns(Task.FromResult(true));
+        mockEmailChecker.Setup(x => x.IsUniqueAsync(It.IsAny<string>(), It.IsAny<Guid>())).Returns(Task.FromResult(true));
 
         Mock<IEmployeeTitleWithinCompanyUniquenessChecker> mockTitleChecker = new();
-        mockTitleChecker.Setup(x => x.IsUniqueAsync(It.IsAny<EmployeeTitle>())).Returns(Task.FromResult(false));
+        mockTitleChecker.Setup(x => x.IsUniqueAsync(It.IsAny<EmployeeTitle>(), It.IsAny<Guid>())).Returns(Task.FromResult(false));
 
         var company = await Company.CreateNew("CompanyName", mockCompanyUniquenessChecker.Object);
 
@@ -101,10 +101,10 @@ public class CompanyTests
         mockCompanyUniquenessChecker.Setup(x => x.IsUniqueAsync(It.IsAny<string>())).Returns(Task.FromResult(true));
 
         Mock<IEmployeeEmailUniquenessChecker> mockEmailChecker = new();
-        mockEmailChecker.Setup(x => x.IsUniqueAsync(It.IsAny<string>())).Returns(Task.FromResult(true));
+        mockEmailChecker.Setup(x => x.IsUniqueAsync(It.IsAny<string>(), It.IsAny<Guid>())).Returns(Task.FromResult(true));
 
         Mock<IEmployeeTitleWithinCompanyUniquenessChecker> mockTitleChecker = new();
-        mockTitleChecker.Setup(x => x.IsUniqueAsync(It.IsAny<EmployeeTitle>())).Returns(Task.FromResult(true));
+        mockTitleChecker.Setup(x => x.IsUniqueAsync(It.IsAny<EmployeeTitle>(), It.IsAny<Guid>())).Returns(Task.FromResult(true));
 
         var company = await Company.CreateNew("CompanyName", mockCompanyUniquenessChecker.Object);
 
@@ -132,10 +132,10 @@ public class CompanyTests
         mockCompanyUniquenessChecker.Setup(x => x.IsUniqueAsync(It.IsAny<string>())).Returns(Task.FromResult(true));
 
         Mock<IEmployeeEmailUniquenessChecker> mockEmailChecker = new();
-        mockEmailChecker.Setup(x => x.IsUniqueAsync(It.IsAny<string>())).Returns(Task.FromResult(true));
+        mockEmailChecker.Setup(x => x.IsUniqueAsync(It.IsAny<string>(), It.IsAny<Guid>())).Returns(Task.FromResult(true));
 
         Mock<IEmployeeTitleWithinCompanyUniquenessChecker> mockTitleChecker = new();
-        mockTitleChecker.Setup(x => x.IsUniqueAsync(It.IsAny<EmployeeTitle>())).Returns(Task.FromResult(true));
+        mockTitleChecker.Setup(x => x.IsUniqueAsync(It.IsAny<EmployeeTitle>(), It.IsAny<Guid>())).Returns(Task.FromResult(true));
 
         var company = await Company.CreateNew("CompanyName", mockCompanyUniquenessChecker.Object);
 

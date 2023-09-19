@@ -6,7 +6,7 @@ public interface ICompanyRepository
 {
     Task<CompanyId> AddAsync(Company company);
     Task<IAsyncEnumerable<Company>> GetByIdsAsync(List<Guid> companyIds);
-    Task UpdateAsync(Company company);
+    Task<bool> UpdateAsync(Company company);
     Task<bool> IsNameUniqueAsync(string name);
     Task<bool> IsEmployeeEmailUniqueAsync(string email, Guid companyId);
     Task<bool> IsEmployeeTitleWithinCompanyUniqueAsync(EmployeeTitle title, Guid companyId);

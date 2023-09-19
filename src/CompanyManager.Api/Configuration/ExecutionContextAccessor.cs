@@ -18,6 +18,7 @@ public class ExecutionContextAccessor : IExecutionContextAccessor
             if (IsAvailable &&
                 _httpContextAccessor.HttpContext!.Request.Headers.Keys.Any(x => x == CorrelationMiddleware.CorrelationHeaderKey))
                 return Guid.Parse(_httpContextAccessor.HttpContext.Request.Headers[CorrelationMiddleware.CorrelationHeaderKey]);
+
             throw new ApplicationException("Http context and correlation id is not available");
         }
     }

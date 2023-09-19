@@ -23,9 +23,7 @@ public class Company : Entity, IAuditable
 
     public Guid Id => _id.Value;
     public string Name { get; }
-
     public IReadOnlyCollection<Employee> Employees => _employees.AsReadOnly();
-
     public DateTime CreatedAt { get; }
 
     public static async Task<Company> CreateNew(string name, ICompanyUniquenessChecker companyUniquenessChecker)
