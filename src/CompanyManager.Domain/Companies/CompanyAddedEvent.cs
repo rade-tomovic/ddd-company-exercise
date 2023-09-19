@@ -2,12 +2,13 @@
 
 namespace CompanyManager.Domain.Companies;
 
-public class CompanyAddedEvent : DomainEventBase
+public sealed class CompanyAddedEvent : DomainEventBase
 {
     public CompanyAddedEvent(Company company)
     {
-        Company = company;
+        Comment = $"Company {company.Name} added.";
+        EventAction = "Added";
+        ResourceType = nameof(Company);
+        Entity = company;
     }
-
-    public Company Company { get; }
 }

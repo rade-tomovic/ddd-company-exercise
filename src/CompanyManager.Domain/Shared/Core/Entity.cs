@@ -5,13 +5,13 @@ namespace CompanyManager.Domain.Shared.Core;
 
 public class Entity
 {
-    private List<IDomainEvent> _domainEvents;
+    private List<IDomainEvent<Entity>> _domainEvents;
 
-    public IReadOnlyCollection<IDomainEvent>? DomainEvents => _domainEvents?.AsReadOnly();
+    public IReadOnlyCollection<IDomainEvent<Entity>>? DomainEvents => _domainEvents?.AsReadOnly();
 
-    protected void AddDomainEvent(IDomainEvent domainEvent)
+    protected void AddDomainEvent(IDomainEvent<Entity> domainEvent)
     {
-        _domainEvents ??= new List<IDomainEvent>();
+        _domainEvents ??= new List<IDomainEvent<Entity>>();
         _domainEvents.Add(domainEvent);
     }
 

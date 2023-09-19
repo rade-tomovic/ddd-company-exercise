@@ -2,14 +2,13 @@
 
 namespace CompanyManager.Domain.Companies.Employees;
 
-public class EmployeeAddedEvent : DomainEventBase
+public sealed class EmployeeAddedEvent : DomainEventBase
 {
     public EmployeeAddedEvent(Employee employee, CompanyId companyId)
     {
-        Employee = employee;
-        CompanyId = companyId;
+        Entity = employee;
+        Comment = $"Employee {employee.Email} added to company {companyId.Value}";
+        EventAction = "Added";
+        ResourceType = nameof(Employee);
     }
-
-    public Employee Employee { get; }
-    public CompanyId CompanyId { get; }
 }

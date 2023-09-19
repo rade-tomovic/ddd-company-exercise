@@ -2,12 +2,11 @@
 
 namespace CompanyManager.Domain.Shared.Core;
 
-public class DomainEventBase : IDomainEvent
+public abstract class DomainEventBase : IDomainEvent<Entity>
 {
-    protected DomainEventBase()
-    {
-        OccurredOn = TimeProvider.Now;
-    }
-
-    public DateTime OccurredOn { get; }
+    public DateTime CreatedAt { get; } = TimeProvider.Now;
+    public string Comment { get; init; }
+    public string ResourceType { get; init; }
+    public string EventAction { get; init; }
+    public Entity Entity { get; init; }
 }
