@@ -1,6 +1,6 @@
 ﻿using CompanyManager.Application.Core;
 
-namespace interview_task_4create.Configuration;
+namespace CompanyManager.Api.Configuration;
 
 public class ExecutionContextAccessor : IExecutionContextAccessor
 {

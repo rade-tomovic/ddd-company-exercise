@@ -1,4 +1,4 @@
-﻿namespace interview_task_4create.Configuration;
+﻿namespace CompanyManager.Api.Configuration;
 
 internal class CorrelationMiddleware
 {

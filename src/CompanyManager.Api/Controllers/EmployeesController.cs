@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace interview_task_4create.Controllers;
+namespace CompanyManager.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]

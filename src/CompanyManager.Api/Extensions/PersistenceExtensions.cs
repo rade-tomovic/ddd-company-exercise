@@ -6,7 +6,7 @@ using CompanyManager.Persistence.Domain.Employees;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 
-namespace interview_task_4create.Extensions;
+namespace CompanyManager.Api.Extensions;
 
 public static class PersistenceExtensions
 {
