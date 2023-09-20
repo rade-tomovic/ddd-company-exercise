@@ -17,14 +17,14 @@ public static class PersistenceExtensions
             options.UseNpgsql(configuration.GetConnectionString("CompaniesDb"));
         });
 
-        var mongoSettings = new MongoClientSettings
-        {
-            Server = new MongoServerAddress(configuration["ConnectionStrings:SystemLogDb"])
-        };
-        services.AddSingleton<IMongoClient>(new MongoClient(mongoSettings));
-
         services.AddScoped<ICompanyRepository, CompanyRepository>();
         services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+
+        //var mongoSettings = new MongoClientSettings
+        //{
+        //    Server = new MongoServerAddress(configuration["ConnectionStrings:SystemLogDb"])
+        //};
+        //services.AddSingleton<IMongoClient>(new MongoClient(mongoSettings));
 
         return services;
     }
