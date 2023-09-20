@@ -4,7 +4,6 @@ using CompanyManager.Persistence;
 using CompanyManager.Persistence.Domain.Companies;
 using CompanyManager.Persistence.Domain.Employees;
 using Microsoft.EntityFrameworkCore;
-using MongoDB.Driver;
 
 namespace CompanyManager.Api.Extensions;
 
@@ -14,17 +13,11 @@ public static class PersistenceExtensions
     {
         services.AddDbContext<CompaniesDbContext>(options =>
         {
-            options.UseNpgsql(configuration.GetConnectionString("CompaniesDb"));
+            options.UseNpgsql(configuration["DbConnections:SystemLogDb"]);
         });
 
         services.AddScoped<ICompanyRepository, CompanyRepository>();
         services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-
-        //var mongoSettings = new MongoClientSettings
-        //{
-        //    Server = new MongoServerAddress(configuration["ConnectionStrings:SystemLogDb"])
-        //};
-        //services.AddSingleton<IMongoClient>(new MongoClient(mongoSettings));
 
         return services;
     }

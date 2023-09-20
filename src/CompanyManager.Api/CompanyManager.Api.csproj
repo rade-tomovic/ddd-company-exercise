@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>CompanyManager.Api</RootNamespace>
     <UserSecretsId>9d1599d2-80ab-47f5-9c21-4325ba33acda</UserSecretsId>
+    <Configurations>Debug;Release;Docker</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

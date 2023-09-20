@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-using System;
-using MongoDB.Bson;
+﻿using MongoDB.Bson;
 
 namespace CompanyManager.Persistence.Domain.SystemLogs;
 
