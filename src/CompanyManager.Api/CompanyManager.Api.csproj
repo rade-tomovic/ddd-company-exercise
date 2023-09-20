@@ -4,16 +4,18 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>interview_task_4create</RootNamespace>
+    <RootNamespace>CompanyManager.Api</RootNamespace>
     <UserSecretsId>9d1599d2-80ab-47f5-9c21-4325ba33acda</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+	<PackageReference Include="MongoDB.Driver" Version="2.21.0" />
 	<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CompanyManager.Application\CompanyManager.Application.csproj" />
+    <ProjectReference Include="..\CompanyManager.Persistence\CompanyManager.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
