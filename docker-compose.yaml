@@ -1,0 +1,60 @@
+version: '3.7'
+
+networks:
+  company-network:
+    driver: bridge
+
+services:
+  api:
+    container_name: company-api
+    image: ${DOCKER_REGISTRY-}companyapi
+    build:
+      context: .
+      dockerfile: ./src/CompanyManager.Api/Dockerfile
+    ports:
+      - "8000:80"
+      - "8001:443"
+    depends_on:
+      - mongo
+      - postgres
+    networks:
+      - company-network
+    environment:
+      MongoDBSettings__Host: mongo
+      MongoDBSettings__Username: ${MONGO_USERNAME}
+      MongoDBSettings__Password: ${MONGO_PASSWORD}
+      PostgresSettings__Host: postgres
+      PostgresSettings__Username: ${POSTGRES_USERNAME}
+      PostgresSettings__Password: ${POSTGRES_PASSWORD}
+      PostgresSettings__Database: ${POSTGRES_DB}
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      - company-network
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+    volumes:
+      - mongo-data:/data/db
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - company-network
+    environment:
+      POSTGRES_USER: ${POSTGRES_USERNAME}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  mongo-data:
+  postgres-data:
