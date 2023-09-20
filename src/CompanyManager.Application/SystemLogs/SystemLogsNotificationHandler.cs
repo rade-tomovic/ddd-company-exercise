@@ -20,7 +20,7 @@ public class SystemLogsNotificationHandler : INotificationHandler<SystemLogNotif
         Guid result = await _repository.AddSystemLog(notification.SystemLog);
 
         if (result != Guid.Empty)
-            _logger.LogInformation($"System log for event {notification.SystemLog.ResourceType} succesfully saved");
+            _logger.LogInformation($"System log for event {notification.SystemLog.ResourceType} successfully saved");
         else
             _logger.LogError($"System log saving failed for event {notification.SystemLog.ResourceType}");
     }
