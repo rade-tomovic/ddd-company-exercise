@@ -13,7 +13,7 @@ public static class PersistenceExtensions
     {
         services.AddDbContext<CompaniesDbContext>(options =>
         {
-            options.UseNpgsql(configuration["DbConnections:SystemLogDb"]);
+            options.UseNpgsql(configuration["DbConnections:CompaniesDb"]);
         });
 
         services.AddScoped<ICompanyRepository, CompanyRepository>();
