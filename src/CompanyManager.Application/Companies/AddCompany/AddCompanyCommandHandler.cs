@@ -1,9 +1,10 @@
-﻿using CompanyManager.Application.Core.Commands;
+﻿using CompanyManager.Application.Core;
+using CompanyManager.Application.Core.Commands;
 using CompanyManager.Application.Shared;
 using CompanyManager.Domain.Companies;
 using CompanyManager.Domain.Companies.Contracts;
 using CompanyManager.Domain.Companies.Employees;
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace CompanyManager.Application.Companies.AddCompany;
 
@@ -14,15 +15,16 @@ public class AddCompanyCommandHandler : ICommandHandler<AddCompanyCommand, Guid>
     private readonly IEmployeeEmailUniquenessChecker _employeeEmailUniquenessChecker;
     private readonly IEmployeeRepository _employeeRepository;
     private readonly IEmployeeTitleWithinCompanyUniquenessChecker _employeeTitleWithinCompanyUniquenessChecker;
-    private readonly ILogger<AddCompanyCommandHandler> _logger;
+    private readonly ILogger _logger;
     private readonly ISystemLogPublisher _systemLogPublisher;
+    private readonly IExecutionContextAccessor _contextAccessor;
 
     public AddCompanyCommandHandler(ICompanyRepository companyRepository,
         ICompanyUniquenessChecker companyUniquenessChecker,
         IEmployeeEmailUniquenessChecker employeeEmailUniquenessChecker,
         IEmployeeTitleWithinCompanyUniquenessChecker employeeTitleWithinCompanyUniquenessChecker,
-        IEmployeeRepository employeeRepository, ILogger<AddCompanyCommandHandler> logger,
-        ISystemLogPublisher systemLogPublisher)
+        IEmployeeRepository employeeRepository, ILogger logger,
+        ISystemLogPublisher systemLogPublisher, IExecutionContextAccessor contextAccessor)
     {
         _companyRepository = companyRepository;
         _companyUniquenessChecker = companyUniquenessChecker;
@@ -31,21 +33,35 @@ public class AddCompanyCommandHandler : ICommandHandler<AddCompanyCommand, Guid>
         _employeeRepository = employeeRepository;
         _logger = logger;
         _systemLogPublisher = systemLogPublisher;
+        _contextAccessor = contextAccessor;
     }
 
     public async Task<Guid> Handle(AddCompanyCommand request, CancellationToken cancellationToken)
     {
-        var company = await Company.CreateNew(request.CompanyName, _companyUniquenessChecker);
-        var allEmployees = await PrepareEmployeeEntities(request);
+        try
+        {
+            _logger.Information(
+                "Executing command {@Command}. Correlation ID: {CorrelationId}", request, _contextAccessor.CorrelationId);
 
-        foreach (var employee in allEmployees)
-            await company.AddEmployee(employee.Email, employee.Title, _employeeEmailUniquenessChecker,
-                _employeeTitleWithinCompanyUniquenessChecker);
+            var company = await Company.CreateNew(request.CompanyName, _companyUniquenessChecker);
+            var allEmployees = await PrepareEmployeeEntities(request);
 
-        var result = await _companyRepository.AddAsync(company);
-        await _systemLogPublisher.PublishDomainEvents(company, cancellationToken);
+            foreach (var employee in allEmployees)
+                await company.AddEmployee(employee.Email, employee.Title, _employeeEmailUniquenessChecker,
+                    _employeeTitleWithinCompanyUniquenessChecker);
 
-        return result.Value;
+            var result = await _companyRepository.AddAsync(company);
+            await _systemLogPublisher.PublishDomainEvents(company, cancellationToken);
+
+            _logger.Information("Command processed successful, result {Result}. Correlation ID: {CorrelationId}", result, _contextAccessor.CorrelationId);
+
+            return result.Value;
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex, "Command processing failed. Correlation ID: {CorrelationId}", _contextAccessor.CorrelationId);
+            throw;
+        }
     }
 
     private async Task<List<Employee>> PrepareEmployeeEntities(AddCompanyCommand request)

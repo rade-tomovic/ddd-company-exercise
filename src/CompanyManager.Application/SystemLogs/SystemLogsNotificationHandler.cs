@@ -1,18 +1,21 @@
-﻿using CompanyManager.Domain.SystemLogs;
+﻿using CompanyManager.Application.Core;
+using CompanyManager.Domain.SystemLogs;
 using MediatR;
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace CompanyManager.Application.SystemLogs;
 
 public class SystemLogsNotificationHandler : INotificationHandler<SystemLogNotification>
 {
-    private readonly ILogger<SystemLogsNotificationHandler> _logger;
+    private readonly ILogger _logger;
     private readonly ISystemLogRepository _repository;
+    private readonly IExecutionContextAccessor _contextAccessor;
 
-    public SystemLogsNotificationHandler(ISystemLogRepository repository, ILogger<SystemLogsNotificationHandler> logger)
+    public SystemLogsNotificationHandler(ISystemLogRepository repository, ILogger logger, IExecutionContextAccessor contextAccessor)
     {
         _repository = repository;
         _logger = logger;
+        _contextAccessor = contextAccessor;
     }
 
     public async Task Handle(SystemLogNotification notification, CancellationToken cancellationToken)
@@ -20,8 +23,8 @@ public class SystemLogsNotificationHandler : INotificationHandler<SystemLogNotif
         string result = await _repository.AddSystemLog(notification.SystemLog);
 
         if (!string.IsNullOrWhiteSpace(result))
-            _logger.LogInformation($"System log for event {notification.SystemLog.ResourceType} successfully saved");
+            _logger.Information($"System log for event {notification.SystemLog.ResourceType} successfully saved. Correlation ID: {_contextAccessor.CorrelationId}");
         else
-            _logger.LogError($"System log saving failed for event {notification.SystemLog.ResourceType}");
+            _logger.Error($"System log saving failed for event {notification.SystemLog.ResourceType}. Correlation ID: {_contextAccessor.CorrelationId}");
     }
 }

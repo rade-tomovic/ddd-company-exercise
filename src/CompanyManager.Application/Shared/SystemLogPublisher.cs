@@ -4,16 +4,16 @@ using CompanyManager.Domain.Shared.Contracts;
 using CompanyManager.Domain.Shared.Core;
 using CompanyManager.Domain.SystemLogs;
 using MediatR;
-using Microsoft.Extensions.Logging;
+using Serilog;
 
 namespace CompanyManager.Application.Shared;
 
 public class SystemLogPublisher : ISystemLogPublisher
 {
-    private readonly ILogger<SystemLogPublisher> _logger;
+    private readonly ILogger _logger;
     private readonly IMediator _mediator;
 
-    public SystemLogPublisher(IMediator mediator, ILogger<SystemLogPublisher> logger)
+    public SystemLogPublisher(IMediator mediator, ILogger logger)
     {
         _mediator = mediator;
         _logger = logger;
@@ -23,7 +23,7 @@ public class SystemLogPublisher : ISystemLogPublisher
     {
         if (company.DomainEvents == null)
         {
-            _logger.LogError($"Domain events are not populated for company {company.Id}");
+            _logger.Error($"Domain events are not populated for company {company.Id}");
             throw new ArgumentOutOfRangeException($"Domain events are not populated for company {company.Id}");
         }
 
