@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "interview_task_4create": {
+    "CompanyManager": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": true,

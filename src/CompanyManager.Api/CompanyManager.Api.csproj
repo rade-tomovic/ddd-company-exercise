@@ -4,11 +4,25 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <RootNamespace>interview_task_4create</RootNamespace>
+    <RootNamespace>CompanyManager.Api</RootNamespace>
+    <UserSecretsId>9d1599d2-80ab-47f5-9c21-4325ba33acda</UserSecretsId>
+    <Configurations>Debug;Release;Docker</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+	<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.7.1" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.11">
+	  <PrivateAssets>all</PrivateAssets>
+	  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	</PackageReference>
+	<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+	<PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
+	<PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CompanyManager.Application\CompanyManager.Application.csproj" />
+    <ProjectReference Include="..\CompanyManager.Persistence\CompanyManager.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
