@@ -81,6 +81,39 @@ public class AddCompanyCommandHandler : ICommandHandler<AddCompanyCommand, Guid>
 
         allEmployees.AddRange(newEmployeeEntities);
 
+        ValidateDuplicateEmails(allEmployees);
+        ValidateDuplicateTitles(allEmployees);
+
         return allEmployees;
+    }
+
+    private void ValidateDuplicateEmails(List<Employee> employees)
+    {
+        var duplicateEmails = employees
+            .GroupBy(e => e.Email)
+            .Where(g => g.Count() > 1)
+            .Select(g => new { Email = g.Key, Count = g.Count() })
+            .ToList();
+
+        if (duplicateEmails.Any())
+        {
+            var errorMessages = duplicateEmails.Select(d => $"Email: {d.Email} (Count: {d.Count})");
+            throw new InvalidOperationException($"Duplicate emails found: {string.Join(", ", errorMessages)}");
+        }
+    }
+
+    private void ValidateDuplicateTitles(List<Employee> employees)
+    {
+        var duplicateTitles = employees
+            .GroupBy(e => e.Title)
+            .Where(g => g.Count() > 1)
+            .Select(g => new { Title = g.Key, Emails = g.Select(e => e.Email).ToList() })
+            .ToList();
+
+        if (duplicateTitles.Any())
+        {
+            var errorMessages = duplicateTitles.Select(d => $"Title: {d.Title} (Emails: {string.Join(", ", d.Emails)})");
+            throw new InvalidOperationException($"Duplicate titles found: {string.Join("; ", errorMessages)}");
+        }
     }
 }
