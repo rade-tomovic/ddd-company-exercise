@@ -20,6 +20,7 @@ public class CompanyRepository : ICompanyRepository
     public async Task<CompanyId> AddAsync(Company company)
     {
         var companyDbEntity = _mapper.Map<CompanyDbEntity>(company);
+        await AddEmployeesAsync(company, companyDbEntity);
         await _context.Companies.AddAsync(companyDbEntity);
         await _context.SaveChangesAsync();
 
@@ -43,19 +44,7 @@ public class CompanyRepository : ICompanyRepository
         if (companyDbEntity == null)
             throw new ArgumentNullException(nameof(companyDbEntity), $"Cannot find company with ID: {company.Id}");
 
-        foreach (Employee? employee in company.Employees)
-        {
-            var employeeToAdd = new EmployeeDbEntity()
-            {
-                Email = employee.Email,
-                CreatedAt = employee.CreatedAt,
-                Title = employee.Title.ToString()
-            };
-
-            await _context.Employees.AddAsync(employeeToAdd);
-
-            companyDbEntity.Employees.Add(employeeToAdd); 
-        }
+        await AddEmployeesAsync(company, companyDbEntity);
         await _context.SaveChangesAsync();
 
         return true;
@@ -74,5 +63,22 @@ public class CompanyRepository : ICompanyRepository
     public async Task<bool> IsEmployeeTitleWithinCompanyUniqueAsync(EmployeeTitle title, Guid companyId)
     {
         return !await _context.Employees.AnyAsync(ce => ce.Companies.Any(x => x.Id == companyId) && ce.Title == title.ToString());
+    }
+
+    private async Task AddEmployeesAsync(Company company, CompanyDbEntity companyDbEntity)
+    {
+        foreach (Employee? employee in company.Employees)
+        {
+            var employeeToAdd = new EmployeeDbEntity()
+            {
+                Email = employee.Email,
+                CreatedAt = employee.CreatedAt,
+                Title = employee.Title.ToString()
+            };
+
+            await _context.Employees.AddAsync(employeeToAdd);
+
+            companyDbEntity.Employees.Add(employeeToAdd);
+        }
     }
 }
