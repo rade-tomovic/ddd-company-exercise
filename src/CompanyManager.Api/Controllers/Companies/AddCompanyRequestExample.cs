@@ -13,7 +13,7 @@ public class AddCompanyRequestExample : IExamplesProvider<AddCompanyRequest>
             new()
             {
                 Email = "some.name@example.com",
-                Title = EmployeeTitle.Developer
+                Title = EmployeeTitle.Manager
             },
             new()
             {
