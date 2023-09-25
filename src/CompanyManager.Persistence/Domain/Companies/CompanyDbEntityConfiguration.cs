@@ -12,8 +12,6 @@ public class CompanyDbEntityConfiguration : IEntityTypeConfiguration<CompanyDbEn
         builder.Property(c => c.Name).IsRequired();
         builder.Property(c => c.CreatedAt).IsRequired();
 
-        builder.HasMany(c => c.CompanyEmployees)
-            .WithOne(ce => ce.Company)
-            .HasForeignKey(ce => ce.CompanyId);
+        builder.HasMany(c => c.Employees).WithMany(ce => ce.Companies);
     }
 }

@@ -14,8 +14,6 @@ public class EmployeeDbEntityConfiguration : IEntityTypeConfiguration<EmployeeDb
         builder.Property(e => e.Email).IsRequired();
         builder.Property(e => e.Title).IsRequired();
 
-        builder.HasMany(e => e.CompanyEmployees)
-            .WithOne(ce => ce.Employee)
-            .HasForeignKey(ce => ce.EmployeeId);
+        builder.HasMany(e => e.Companies).WithMany(ce => ce.Employees);
     }
 }

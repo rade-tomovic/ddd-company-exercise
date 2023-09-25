@@ -10,7 +10,6 @@ public class CompaniesDbContext : DbContext
 
     public DbSet<CompanyDbEntity> Companies { get; set; }
     public DbSet<EmployeeDbEntity> Employees { get; set; }
-    public DbSet<CompanyEmployeeDbEntity> CompanyEmployees { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

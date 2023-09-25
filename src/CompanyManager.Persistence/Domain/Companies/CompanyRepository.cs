@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CompanyManager.Domain.Companies;
 using CompanyManager.Domain.Companies.Employees;
+using CompanyManager.Persistence.Domain.Employees;
 using Microsoft.EntityFrameworkCore;
 
 namespace CompanyManager.Persistence.Domain.Companies;
@@ -32,17 +33,29 @@ public class CompanyRepository : ICompanyRepository
             .AsNoTracking()
             .ToListAsync();
 
-        return companies.Select(x => _mapper.Map<Company>(x));
+        return companies.Select(x => Company.CreateNewWithoutChecking(x.Name, x.CreatedAt, x.Id));
     }
 
-    public async Task<bool> UpdateAsync(Company company)
+    public async Task<bool> AddEmployeeToCompany(Company company)
     {
-        CompanyDbEntity? companyDbEntity = await _context.Companies.FindAsync(company.Id);
+        CompanyDbEntity? companyDbEntity = await _context.Companies.SingleOrDefaultAsync(x => x.Id == company.Id);
 
         if (companyDbEntity == null)
-            return false;
+            throw new ArgumentNullException(nameof(companyDbEntity), $"Cannot find company with ID: {company.Id}");
 
-        _mapper.Map(company, companyDbEntity);
+        foreach (var employee in company.Employees)
+        {
+            var employeeToAdd = new EmployeeDbEntity()
+            {
+                Email = employee.Email,
+                CreatedAt = employee.CreatedAt,
+                Title = employee.Title.ToString()
+            };
+
+            await _context.Employees.AddAsync(employeeToAdd);
+
+            companyDbEntity.Employees.Add(employeeToAdd); 
+        }
         await _context.SaveChangesAsync();
 
         return true;
@@ -55,11 +68,11 @@ public class CompanyRepository : ICompanyRepository
 
     public async Task<bool> IsEmployeeEmailUniqueAsync(string email, Guid companyId)
     {
-        return !await _context.CompanyEmployees.AnyAsync(ce => ce.CompanyId == companyId && ce.Employee.Email == email);
+        return !await _context.Employees.AnyAsync(ce => ce.Companies.Any(x => x.Id == companyId) && ce.Email == email);
     }
 
     public async Task<bool> IsEmployeeTitleWithinCompanyUniqueAsync(EmployeeTitle title, Guid companyId)
     {
-        return !await _context.CompanyEmployees.AnyAsync(ce => ce.CompanyId == companyId && ce.Employee.Title == title.ToString());
+        return !await _context.Employees.AnyAsync(ce => ce.Companies.Any(x => x.Id == companyId) && ce.Title == title.ToString());
     }
 }

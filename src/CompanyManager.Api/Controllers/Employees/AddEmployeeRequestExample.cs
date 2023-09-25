@@ -14,7 +14,7 @@ public class AddEmployeeRequestExample : IExamplesProvider<AddEmployeeRequest>
             {
                 Guid.NewGuid()
             },
-            EmployeeTitle.Developer,
-            "some.developer@example.com");
+            EmployeeTitle.Tester,
+            "some.tester@example.com");
     }
 }

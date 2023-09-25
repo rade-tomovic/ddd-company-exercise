@@ -47,7 +47,7 @@ public class AddEmployeeCommandHandler : ICommandHandler<AddEmployeeCommand, Gui
                 await company.AddEmployee(employee.Email, employee.Title, _employeeEmailUniquenessChecker,
                     _employeeTitleWithinCompanyUniquenessChecker);
 
-                bool result = await _companyRepository.UpdateAsync(company);
+                bool result = await _companyRepository.AddEmployeeToCompany(company);
 
                 if (!result)
                     _logger.Error($"Failed to add employee {employee.Email} to company with id {company.Id}");
