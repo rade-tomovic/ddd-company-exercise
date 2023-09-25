@@ -32,14 +32,14 @@ public class AddEmployeeCommandHandler : ICommandHandler<AddEmployeeCommand, Gui
     {
         var employee = Employee.CreateNew(request.Email, request.Title);
 
-        var companies = await _companyRepository.GetByIdsAsync(request.CompanyIds);
+        IEnumerable<Company> companies = await _companyRepository.GetByIdsAsync(request.CompanyIds);
 
-        await foreach (var company in companies.WithCancellation(cancellationToken))
+        foreach (Company company in companies)
         {
             await company.AddEmployee(employee.Email, employee.Title, _employeeEmailUniquenessChecker,
                 _employeeTitleWithinCompanyUniquenessChecker);
 
-            var result = await _companyRepository.UpdateAsync(company);
+            bool result = await _companyRepository.UpdateAsync(company);
 
             if (!result)
                 _logger.LogError($"Failed to add employee {employee.Email} to company with id {company.Id}");

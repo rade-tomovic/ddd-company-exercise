@@ -1,4 +1,5 @@
-﻿using CompanyManager.Domain.Companies.Contracts;
+﻿using System.Text.Json.Serialization;
+using CompanyManager.Domain.Companies.Contracts;
 using CompanyManager.Domain.Companies.Employees;
 using CompanyManager.Domain.Companies.Rules;
 using CompanyManager.Domain.Shared.Contracts;
@@ -21,8 +22,18 @@ public class Company : Entity, IAuditable
         AddDomainEvent(new CompanyAddedEvent(this));
     }
 
+    private Company(string name, DateTime createdAt, Guid id)
+    {
+        Name = name;
+        _employees = new List<Employee>();
+        _id = new CompanyId(id);
+        CreatedAt = createdAt;
+    }
+
     public Guid Id => _id.Value;
     public string Name { get; }
+
+    [JsonIgnore]
     public IReadOnlyCollection<Employee> Employees => _employees.AsReadOnly();
     public DateTime CreatedAt { get; }
 
@@ -31,6 +42,11 @@ public class Company : Entity, IAuditable
         await CheckRuleAsync(new CompanyNameMustBeUniqueRule(companyUniquenessChecker, name));
 
         return new Company(name);
+    }
+
+    public static Company CreateNewWithoutChecking(string name, DateTime createdAt, Guid id)
+    {
+        return new Company(name, createdAt, id);
     }
 
     public async Task<EmployeeId> AddEmployee(string email, EmployeeTitle title, IEmployeeEmailUniquenessChecker emailUniquenessChecker,

@@ -1,5 +1,6 @@
 ﻿using CompanyManager.Domain.Shared.Contracts;
 using CompanyManager.Domain.Shared.Exceptions;
+using System.Text.Json.Serialization;
 
 namespace CompanyManager.Domain.Shared.Core;
 
@@ -7,6 +8,7 @@ public class Entity
 {
     private List<IDomainEvent<Entity>> _domainEvents;
 
+    [JsonIgnore]
     public IReadOnlyCollection<IDomainEvent<Entity>>? DomainEvents => _domainEvents?.AsReadOnly();
 
     protected void AddDomainEvent(IDomainEvent<Entity> domainEvent)

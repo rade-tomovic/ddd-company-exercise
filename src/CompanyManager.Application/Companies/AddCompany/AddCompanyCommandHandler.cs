@@ -36,7 +36,7 @@ public class AddCompanyCommandHandler : ICommandHandler<AddCompanyCommand, Guid>
     public async Task<Guid> Handle(AddCompanyCommand request, CancellationToken cancellationToken)
     {
         var company = await Company.CreateNew(request.CompanyName, _companyUniquenessChecker);
-        var allEmployees = PrepareEmployeeEntities(request);
+        var allEmployees = await PrepareEmployeeEntities(request);
 
         foreach (var employee in allEmployees)
             await company.AddEmployee(employee.Email, employee.Title, _employeeEmailUniquenessChecker,
@@ -48,18 +48,21 @@ public class AddCompanyCommandHandler : ICommandHandler<AddCompanyCommand, Guid>
         return result.Value;
     }
 
-    private List<Employee> PrepareEmployeeEntities(AddCompanyCommand request)
+    private async Task<List<Employee>> PrepareEmployeeEntities(AddCompanyCommand request)
     {
         var newEmployees = request.Employees.Where(e => e.Id == null).ToList();
         var existingEmployees = request.Employees.Where(e => e.Id != null).ToList();
+        List<Employee> allEmployees = new();
 
-        var existingEmployeeEntities =
-            _employeeRepository.GetByIdsAsync(existingEmployees.Select(e => e.Id!.Value).ToArray()).Result;
+        if (existingEmployees.Any())
+        {
+            var existingEmployeeEntities = await _employeeRepository.GetByIdsAsync(existingEmployees.Select(e => e.Id!.Value).ToArray());
+            allEmployees.AddRange(existingEmployeeEntities);
+        }
+        
         var newEmployeeEntities = newEmployees
             .Select(x => Employee.CreateNew(x.Email!, x.Title!.Value)).ToList();
 
-        List<Employee> allEmployees = new();
-        allEmployees.AddRange(existingEmployeeEntities);
         allEmployees.AddRange(newEmployeeEntities);
 
         return allEmployees;

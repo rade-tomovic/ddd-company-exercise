@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 
-namespace CompanyManager.Api.Controllers;
+namespace CompanyManager.Api.Controllers.Companies;
 
 [Route("api/companies")]
 [ApiController]

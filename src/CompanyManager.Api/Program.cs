@@ -1,7 +1,9 @@
 using System.Text.Json.Serialization;
 using CompanyManager.Api.Extensions;
 using CompanyManager.Application.Core.Commands;
+using CompanyManager.Persistence.EntityMapping;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +26,10 @@ builder.Services.AddSwaggerGen(options =>
     });
 
     options.UseInlineDefinitionsForEnums();
+    options.ExampleFilters();
 });
+
+builder.Services.AddSwaggerExamplesFromAssemblyOf<Program>();
 
 builder.Services
     .AddPersistence(builder.Configuration)
@@ -32,6 +37,8 @@ builder.Services
     .AddDomainServices();
 
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly, typeof(ICommand).Assembly));
+builder.Services.AddAutoMapper(typeof(EmployeeProfile).Assembly);
+
 
 WebApplication app = builder.Build();
 

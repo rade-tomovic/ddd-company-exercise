@@ -17,9 +17,9 @@ public class SystemLogsNotificationHandler : INotificationHandler<SystemLogNotif
 
     public async Task Handle(SystemLogNotification notification, CancellationToken cancellationToken)
     {
-        Guid result = await _repository.AddSystemLog(notification.SystemLog);
+        string result = await _repository.AddSystemLog(notification.SystemLog);
 
-        if (result != Guid.Empty)
+        if (!string.IsNullOrWhiteSpace(result))
             _logger.LogInformation($"System log for event {notification.SystemLog.ResourceType} successfully saved");
         else
             _logger.LogError($"System log saving failed for event {notification.SystemLog.ResourceType}");
