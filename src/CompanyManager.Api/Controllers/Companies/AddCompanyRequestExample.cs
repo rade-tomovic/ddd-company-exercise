@@ -8,7 +8,7 @@ public class AddCompanyRequestExample : IExamplesProvider<AddCompanyRequest>
 {
     public AddCompanyRequest GetExamples()
     {
-        return new AddCompanyRequest("SpencCentric", new List<EmployeeToAdd>
+        return new AddCompanyRequest("SpendCentric", new List<EmployeeToAdd>
         {
             new()
             {
