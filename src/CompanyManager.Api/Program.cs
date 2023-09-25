@@ -1,9 +1,13 @@
 using System.Text.Json.Serialization;
 using CompanyManager.Api.Configuration;
 using CompanyManager.Api.Extensions;
+using CompanyManager.Application.Companies.AddCompany;
 using CompanyManager.Application.Core;
 using CompanyManager.Application.Core.Commands;
+using CompanyManager.Application.Core.Validation;
 using CompanyManager.Persistence.EntityMapping;
+using FluentValidation;
+using MediatR;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using Swashbuckle.AspNetCore.Filters;
@@ -44,11 +48,13 @@ try
         .AddSystemLogHandling(builder.Configuration)
         .AddDomainServices();
 
-    builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly, typeof(ICommand).Assembly));
+    builder.Services
+        .AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(typeof(Program).Assembly, typeof(ICommand).Assembly))
+        .AddScoped(typeof(IPipelineBehavior<,>), typeof(CommandValidationBehavior<,>));
     builder.Services.AddAutoMapper(typeof(EmployeeProfile).Assembly);
     builder.Services.AddHttpContextAccessor();
     builder.Services.AddScoped<IExecutionContextAccessor, ExecutionContextAccessor>();
-
+    builder.Services.AddValidatorsFromAssembly(typeof(AddCompanyCommandValidator).Assembly);
 
     WebApplication app = builder.Build();
     app.UseMiddleware<CorrelationMiddleware>();

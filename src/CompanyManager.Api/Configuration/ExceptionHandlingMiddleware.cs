@@ -1,14 +1,15 @@
 ﻿using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
+using ILogger = Serilog.ILogger;
 
 namespace CompanyManager.Api.Configuration;
 
 public class ExceptionHandlingMiddleware
 {
-    private readonly ILogger<GlobalExceptionHandler> _logger;
+    private readonly ILogger _logger;
     private readonly RequestDelegate _next;
 
-    public ExceptionHandlingMiddleware(RequestDelegate next, ILogger<GlobalExceptionHandler> logger)
+    public ExceptionHandlingMiddleware(RequestDelegate next, ILogger logger)
     {
         _next = next;
         _logger = logger;

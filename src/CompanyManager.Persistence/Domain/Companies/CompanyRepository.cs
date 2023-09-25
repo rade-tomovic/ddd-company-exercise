@@ -43,7 +43,7 @@ public class CompanyRepository : ICompanyRepository
         if (companyDbEntity == null)
             throw new ArgumentNullException(nameof(companyDbEntity), $"Cannot find company with ID: {company.Id}");
 
-        foreach (var employee in company.Employees)
+        foreach (Employee? employee in company.Employees)
         {
             var employeeToAdd = new EmployeeDbEntity()
             {

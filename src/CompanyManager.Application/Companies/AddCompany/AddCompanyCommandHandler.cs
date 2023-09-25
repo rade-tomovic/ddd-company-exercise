@@ -44,13 +44,13 @@ public class AddCompanyCommandHandler : ICommandHandler<AddCompanyCommand, Guid>
                 "Executing command {@Command}. Correlation ID: {CorrelationId}", request, _contextAccessor.CorrelationId);
 
             var company = await Company.CreateNew(request.CompanyName, _companyUniquenessChecker);
-            var allEmployees = await PrepareEmployeeEntities(request);
+            List<Employee> allEmployees = await PrepareEmployeeEntities(request);
 
-            foreach (var employee in allEmployees)
+            foreach (Employee employee in allEmployees)
                 await company.AddEmployee(employee.Email, employee.Title, _employeeEmailUniquenessChecker,
                     _employeeTitleWithinCompanyUniquenessChecker);
 
-            var result = await _companyRepository.AddAsync(company);
+            CompanyId result = await _companyRepository.AddAsync(company);
             await _systemLogPublisher.PublishDomainEvents(company, cancellationToken);
 
             _logger.Information("Command processed successful, result {Result}. Correlation ID: {CorrelationId}", result, _contextAccessor.CorrelationId);
@@ -66,17 +66,17 @@ public class AddCompanyCommandHandler : ICommandHandler<AddCompanyCommand, Guid>
 
     private async Task<List<Employee>> PrepareEmployeeEntities(AddCompanyCommand request)
     {
-        var newEmployees = request.Employees.Where(e => e.Id == null).ToList();
-        var existingEmployees = request.Employees.Where(e => e.Id != null).ToList();
+        List<EmployeeToAdd> newEmployees = request.Employees.Where(e => e.Id == null).ToList();
+        List<EmployeeToAdd> existingEmployees = request.Employees.Where(e => e.Id != null).ToList();
         List<Employee> allEmployees = new();
 
         if (existingEmployees.Any())
         {
-            var existingEmployeeEntities = await _employeeRepository.GetByIdsAsync(existingEmployees.Select(e => e.Id!.Value).ToArray());
+            List<Employee> existingEmployeeEntities = await _employeeRepository.GetByIdsAsync(existingEmployees.Select(e => e.Id!.Value).ToArray());
             allEmployees.AddRange(existingEmployeeEntities);
         }
         
-        var newEmployeeEntities = newEmployees
+        List<Employee> newEmployeeEntities = newEmployees
             .Select(x => Employee.CreateNew(x.Email!, x.Title!.Value)).ToList();
 
         allEmployees.AddRange(newEmployeeEntities);
@@ -87,7 +87,7 @@ public class AddCompanyCommandHandler : ICommandHandler<AddCompanyCommand, Guid>
         return allEmployees;
     }
 
-    private void ValidateDuplicateEmails(List<Employee> employees)
+    private static void ValidateDuplicateEmails(List<Employee> employees)
     {
         var duplicateEmails = employees
             .GroupBy(e => e.Email)
@@ -95,14 +95,14 @@ public class AddCompanyCommandHandler : ICommandHandler<AddCompanyCommand, Guid>
             .Select(g => new { Email = g.Key, Count = g.Count() })
             .ToList();
 
-        if (duplicateEmails.Any())
-        {
-            var errorMessages = duplicateEmails.Select(d => $"Email: {d.Email} (Count: {d.Count})");
-            throw new InvalidOperationException($"Duplicate emails found: {string.Join(", ", errorMessages)}");
-        }
+        if (!duplicateEmails.Any())
+            return;
+
+        IEnumerable<string> errorMessages = duplicateEmails.Select(d => $"Email: {d.Email} (Count: {d.Count})");
+        throw new InvalidOperationException($"Duplicate emails found: {string.Join(", ", errorMessages)}");
     }
 
-    private void ValidateDuplicateTitles(List<Employee> employees)
+    private static void ValidateDuplicateTitles(List<Employee> employees)
     {
         var duplicateTitles = employees
             .GroupBy(e => e.Title)
@@ -110,10 +110,10 @@ public class AddCompanyCommandHandler : ICommandHandler<AddCompanyCommand, Guid>
             .Select(g => new { Title = g.Key, Emails = g.Select(e => e.Email).ToList() })
             .ToList();
 
-        if (duplicateTitles.Any())
-        {
-            var errorMessages = duplicateTitles.Select(d => $"Title: {d.Title} (Emails: {string.Join(", ", d.Emails)})");
-            throw new InvalidOperationException($"Duplicate titles found: {string.Join("; ", errorMessages)}");
-        }
+        if (!duplicateTitles.Any()) 
+            return;
+
+        IEnumerable<string> errorMessages = duplicateTitles.Select(d => $"Title: {d.Title} (Emails: {string.Join(", ", d.Emails)})");
+        throw new InvalidOperationException($"Duplicate titles found: {string.Join("; ", errorMessages)}");
     }
 }

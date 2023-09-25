@@ -27,9 +27,9 @@ public class SystemLogPublisher : ISystemLogPublisher
             throw new ArgumentOutOfRangeException($"Domain events are not populated for company {company.Id}");
         }
 
-        foreach (var domainEvent in company.DomainEvents)
+        foreach (IDomainEvent<Entity>? domainEvent in company.DomainEvents)
         {
-            var systemLog = SystemLog<IDomainEvent<Entity>, Entity>.CreateNew(domainEvent);
+            SystemLog<IDomainEvent<Entity>, Entity>? systemLog = SystemLog<IDomainEvent<Entity>, Entity>.CreateNew(domainEvent);
             await _mediator.Publish(new SystemLogNotification(systemLog), cancellationToken);
         }
     }

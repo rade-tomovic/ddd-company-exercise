@@ -7,9 +7,9 @@ namespace CompanyManager.Application.Core.Validation;
 
 public class CommandValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse> where TRequest : notnull
 {
-    private readonly IList<IValidator<TRequest>> _validators;
+    private readonly IEnumerable<IValidator<TRequest>> _validators;
 
-    public CommandValidationBehavior(IList<IValidator<TRequest>> validators)
+    public CommandValidationBehavior(IEnumerable<IValidator<TRequest>> validators)
     {
         _validators = validators;
     }
@@ -29,6 +29,6 @@ public class CommandValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
         foreach (ValidationFailure? error in errors)
             errorBuilder.AppendLine(error.ErrorMessage);
 
-        throw new InvalidCommandException(errorBuilder.ToString(), null);
+        throw new InvalidCommandException(errorBuilder.ToString(), "");
     }
 }
